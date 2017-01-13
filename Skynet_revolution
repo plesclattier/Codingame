@@ -1,0 +1,84 @@
+import sys
+import math
+
+
+class Node(object):
+    """objet noeuds, comprenant son id et ses voisins"""
+    def __init__(self,n=0):
+        self.n=n
+        self.voisin=[]
+
+    def addVoisin(self, m):
+        self.voisin.append(m)
+
+    def removeVoisin(self,m):
+        self.voisin.remove(m)
+
+class Path(object):
+    """object chemin, qui trouve le chemin avecun algo BFS"""
+    def __init__(self, begin,end,node):
+        self.p = []
+        N=len(node)
+        explored,prec = [False for i in range(N)],[-1 for i in range(N)]
+        explored[begin.n]=True
+
+        q,n=[begin],None
+        while len(q)!=0:
+            n=q.pop()
+            if n==end:
+                break
+            else:
+                for m in n.voisin:
+                    if not explored[m.n]:
+                        explored[m.n]=True
+                        prec[m.n]=n
+                        q[0:0]=[m]
+        if n==end:
+            while n!=begin:
+                self.p[0:0]=[n]
+                n=prec[n.n]
+            self.p[0:0]=[n]
+
+    def lenght(self):
+        return len(self.p)
+
+    def addFirst(self,n):
+        self.p[0:0]=[n]
+
+    def getNode(self,i):
+        return self.p[i]
+
+def cut(n1,n2):
+    n1.removeVoisin(n2)
+    n2.removeVoisin(n1)
+    print("{} {}".format(n1.n,n2.n))
+
+
+"""debut du jeu"""
+n, l, f = [int(i) for i in input().split()]
+nodes = []
+for i in range(n):
+    nodes.append(Node(i)) #tableau avec tout les noeuds
+
+for i in range(l):
+    N1, N2 = [int(j) for j in input().split()]
+    nodes[N1].addVoisin(nodes[N2])
+    nodes[N2].addVoisin(nodes[N1])
+
+exits = []
+for i in range(f):
+    exits.append(nodes[int(input())])
+while 1:
+    SI = int(input())
+    chemin = []
+    talliemin=99999
+    sortie = None
+
+    for i in range(f):
+        chemin.append(Path(nodes[SI],exits[i],nodes))
+        l=chemin[i].lenght()
+        if (l!=0) and (l<=talliemin):
+            talliemin = l
+            sortie = chemin[i]
+    cut(sortie.getNode(0),sortie.getNode(1))
+
