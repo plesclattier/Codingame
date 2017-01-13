@@ -1,2 +1,2 @@
 # Codingame
-mes codes pour les problèmesd' entrainement codingame
+mes codes pour les problèmes d' entrainement codingame
