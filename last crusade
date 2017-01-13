@@ -1,0 +1,46 @@
+import sys
+import math
+#typ: tableau conenant les pièces, leur type en indice, puis les couples entrée/sortie b=bas, r=right, l= left, n=impossible
+#exemple: typ[2]["LEFT"] ressort "r" = un décalage de 1 pour x
+typ=[{"TOP":"n","LEFT":"n","RIGHT":"n"}, #0
+    {"TOP":"b","LEFT":"b","RIGHT":"b"},   #1
+    {"TOP":"n","LEFT":"r","RIGHT":"l"},  #2
+    {"TOP":"b","LEFT":"n","RIGHT":"n"},  #3
+    {"TOP":"l","LEFT":"n","RIGHT":"b"},  #4
+    {"TOP":"r","LEFT":"b","RIGHT":"n"},  #5
+    {"TOP":"n","LEFT":"r","RIGHT":"l"},  #6
+    {"TOP":"b","LEFT":"n","RIGHT":"b"},  #7
+    {"TOP":"n","LEFT":"b","RIGHT":"b"},  #8
+    {"TOP":"b","LEFT":"b","RIGHT":"r"},  #9
+    {"TOP":"l","LEFT":"n","RIGHT":"n"},  #10
+    {"TOP":"r","LEFT":"n","RIGHT":"n"},  #11
+    {"TOP":"n","LEFT":"n","RIGHT":"b"},  #12
+    {"TOP":"n","LEFT":"b","RIGHT":"n"}]  #13
+
+w, h = [int(i) for i in input().split()]
+carte=[[0 for i in range(w)] for i in range(h)]
+for i in range(h):
+    line = input().split(" ")  # represents a line in the grid and contains W integers. Each integer represents one room of a given type.
+    for k in range(w):
+        carte[i][k]=int(line[k])
+print(carte,file=sys.stderr)        
+ex = int(input())  # the coordinate along the X axis of the exit (not useful for this first mission, but must be read).
+
+# game loop
+while True:
+    xi, yi, pos = input().split()
+    xi = int(xi)
+    yi = int(yi)
+    sortie = typ[carte[yi][xi]][pos]
+    
+    if sortie == "b":
+        x=xi
+        y=yi+1
+    if sortie == "r":
+        x=xi+1
+        y=yi
+    if sortie == "l":
+        x=xi-1
+        y=yi
+
+    print("{} {}".format(x,y))
